@@ -113,4 +113,4 @@ jobs:
       - name: Upload to S3
         run: aws s3 cp \
           ${{ github.sha }}.zip \
-          s3://<AWS_BUCKET>/${{ github.sha }}.zip
+          s3://${{ secrets.AWS_BUCKET }}/${{ github.sha }}.zip
