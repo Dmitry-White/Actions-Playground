@@ -1,0 +1,7 @@
+# Create an IAM user named `github_user`
+# with `S3FullAccess` permissions
+# and programmatic access
+
+# Add `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
+# and `AWS_ACCOUNT_ID` to your repo environment
+# under `Repo -> Settings/Secrets`
