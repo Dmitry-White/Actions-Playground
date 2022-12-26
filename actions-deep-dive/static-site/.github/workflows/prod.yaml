@@ -1,0 +1,14 @@
+name: Production Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  temp:
+    name: Temp Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Temp Step
+        run: echo "Hello World"
