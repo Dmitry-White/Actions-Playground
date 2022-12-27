@@ -6,9 +6,33 @@ on:
       - main
 
 jobs:
-  temp:
-    name: Temp Job
+  build:
+    name: Build Code
     runs-on: ubuntu-latest
     steps:
-      - name: Temp Step
-        run: echo "Hello World"
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Install dependecies
+        run: npm ci
+
+      - name: Build Gatsby
+        run: npm run build
+
+      - name: Bundle build into an Artifact
+        run: |
+          sudo apt update
+          sudo apt upgrade -y
+          sudo apt-get install zip -y
+          zip -r ./${{ github.sha }}.zip ./public
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: ${{ github.sha }}.zip
