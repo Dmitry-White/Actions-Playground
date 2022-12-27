@@ -2,10 +2,12 @@
 # with `AmazonS3FullAccess` permissions
 # and programmatic access
 
-# Add `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
-# and `AWS_ACCOUNT_ID` to your repo environment
-# under `Repo -> Settings/Secrets`
-
 # Create 2 S3 public buckets
 # `*-nonprod` and `*-prod`
 # with Static website hosting enabled
+
+# Add `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
+# `AWS_ACCOUNT_ID`, `S3_BUCKET_NONPROD`
+# and `S3_BUCKET_PROD` to your repo environment
+# under `Repo -> Settings/Secrets`
+
