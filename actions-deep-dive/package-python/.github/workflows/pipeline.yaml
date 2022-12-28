@@ -119,6 +119,9 @@ jobs:
     name: Test Code
     runs-on: ubuntu-latest
     needs: upload
+    strategy:
+      matrix:
+        input: [Hello, Hi]
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1-node16
@@ -133,11 +136,21 @@ jobs:
           LAMBDA_RUNTIME: python3.8
         run: |
           aws lambda create-function \
-            --function-name ${{ secrets.AWS_LAMBDA }} \
+            --function-name ${{ secrets.AWS_LAMBDA }}-${{ matrix.input }} \
             --code S3Bucket=${{ secrets.AWS_BUCKET }},S3Key=${{ github.sha }}.zip \
             --handler ${{ env.LAMBDA_HANDLER }} \
             --runtime ${{ env.LAMBDA_RUNTIME }} \
             --role ${{ secrets.AWS_LAMBDA_ROLE }}
+
+      - name: Invoke test function
+        run: |
+          aws lambda invoke \
+            --function-name ${{ secrets.AWS_LAMBDA }}-${{ matrix.input }} \
+            --payload $(echo "{ \"input\": \"${{ matrix.input }} \"  }" | base64) \
+            --output json out
+          if grep -q "Error" out; then
+            exit1
+          fi
 
       - name: Wait 30 seconds
         run: sleep 30
@@ -146,7 +159,7 @@ jobs:
         if: ${{ always() }}
         run: |
           aws lambda delete-function \
-            --function-name ${{ secrets.AWS_LAMBDA }} \  
+            --function-name ${{ secrets.AWS_LAMBDA }}-${{ matrix.input }}
 
   deploy:
     name: Deploy Artifact
