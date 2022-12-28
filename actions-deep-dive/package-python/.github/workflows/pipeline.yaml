@@ -115,6 +115,39 @@ jobs:
           ${{ github.sha }}.zip \
           s3://${{ secrets.AWS_BUCKET }}/${{ github.sha }}.zip
 
+  test:
+    name: Test Code
+    runs-on: ubuntu-latest
+    needs: upload
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Create test function
+        env:
+          LAMBDA_HANDLER: lambda_function.lambda_handler
+          LAMBDA_RUNTIME: python3.8
+        run: |
+          aws lambda create-function \
+            --function-name ${{ secrets.AWS_LAMBDA }} \
+            --code S3Bucket=${{ secrets.AWS_BUCKET }},S3Key=${{ github.sha }}.zip \
+            --handler ${{ env.LAMBDA_HANDLER }} \
+            --runtime ${{ env.LAMBDA_RUNTIME }} \
+            --role ${{ secrets.AWS_LAMBDA_ROLE }}
+
+      - name: Wait 30 seconds
+        run: sleep 30
+
+      - name: Destroy test function
+        if: ${{ always() }}
+        run: |
+          aws lambda delete-function \
+            --function-name ${{ secrets.AWS_LAMBDA }} \  
+
   deploy:
     name: Deploy Artifact
     runs-on: ubuntu-latest
