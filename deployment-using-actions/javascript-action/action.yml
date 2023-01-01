@@ -9,7 +9,7 @@ inputs: # input parameters are stored as environment variables
 
 runs:
   using: "node12"
-  main: "index.js"
+  main: "dist/index.js"
 
 outputs:
   time: # id of output

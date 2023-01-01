@@ -14,9 +14,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: npm i
-
       - name: Hello world action step
         uses: ./ # Uses an action in the root directory
         id: hello
