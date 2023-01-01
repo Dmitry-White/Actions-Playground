@@ -1,0 +1,29 @@
+name: JS Action Pipeline
+
+on: [push]
+
+jobs:
+  hello_world_job:
+    name: A job to say hello
+    runs-on: ubuntu-latest
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository.
+      # This action checks-out your repository under $GITHUB_WORKSPACE,
+      # so your workflow can access it.
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Hello world action step
+        uses: ./ # Uses an action in the root directory
+        id: hello
+        with:
+          who-to-greet: "Dmitry White"
+
+      # Use the output from the `hello` step
+      # by accessing the output's ID specified in `action.yml`
+      - name: Get the output time
+        run: echo "The time was ${{ steps.hello.outputs.time }}"
