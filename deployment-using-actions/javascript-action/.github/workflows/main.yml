@@ -12,7 +12,7 @@ jobs:
       # This action checks-out your repository under $GITHUB_WORKSPACE,
       # so your workflow can access it.
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Hello world action step
         uses: ./ # Uses an action in the root directory
