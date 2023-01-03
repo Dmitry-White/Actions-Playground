@@ -1,0 +1,26 @@
+name: Container Memory Action Pipeline
+
+on: [push]
+
+jobs:
+  container_job:
+    name: A job to output container info
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # - name: User permissions
+      #   run: sudo usermod -a -G docker cloud_user
+
+      # - name: Setup Docker
+      #   uses: docker-practice/actions-setup-docker@master
+
+      - name: Container Step
+        id: docker-container
+        uses: ./
+        with:
+          container-name: Unus Annus
+
+      - name: Get the output memory
+        run: echo "The memory is ${{ steps.docker-container.outputs.memory }}"

@@ -1,0 +1,19 @@
+name: Container Memory Management
+description: Outputs memory utilization information
+
+inputs: # input parameters are stored as environment variables
+  container-name: # id of input
+    type: string
+    description: Container Name
+    required: true
+    default: Memento
+
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.container-name }}
+
+outputs:
+  memory: # id of output
+    description: Container memory utilization
