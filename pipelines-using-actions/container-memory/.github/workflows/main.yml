@@ -10,17 +10,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # - name: User permissions
-      #   run: sudo usermod -a -G docker cloud_user
-
-      # - name: Setup Docker
-      #   uses: docker-practice/actions-setup-docker@master
-
       - name: Container Step
-        id: docker-container
+        id: unus-container
         uses: ./
         with:
           container-name: Unus Annus
 
-      - name: Get the output memory
-        run: echo "The memory is ${{ steps.docker-container.outputs.memory }}"
+      - name: Container Step
+        id: memento-container
+        uses: ./
+
+      - name: Get the Unus Annus output memory
+        run: echo "The memory is ${{ steps.unus-container.outputs.memory }}"
+
+      - name: Get the Memento output memory
+        run: echo "The memory is ${{ steps.memento-container.outputs.memory }}"
